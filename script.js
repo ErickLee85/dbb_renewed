@@ -323,7 +323,8 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                const target = document.querySelector(href);
                 if (target) {
                     // Close mobile menu if open
                     const mobileMenu = document.querySelector('.mobile-menu');
@@ -340,7 +341,8 @@
                     } else {
                         // Use GSAP scrollTo on desktop
                         if (smoother) {
-                            smoother.scrollTo(target, true, "top top");
+                            // Use selector string for ScrollSmoother
+                            smoother.scrollTo(href, true, "top top");
                         } else {
                             gsap.to(window, {
                                 duration: 1,
@@ -525,6 +527,86 @@
                      showReview(nextIndex);
                  });
              }
+         }
+
+         // Get In Touch Section Animation
+         document.fonts.ready.then(() => {
+             const getInTouchHero = document.querySelector('.get-in-touch-hero');
+             if (getInTouchHero) {
+                 let splitTouchHero = SplitText.create([".get-in-touch-hero"], { type: "words" });
+                 gsap.fromTo(splitTouchHero.words, {
+                     opacity: 0,
+                     filter: 'blur(10px)'
+                 }, {
+                     opacity: 1,
+                     filter: 'blur(0px)',
+                     duration: 1,
+                     stagger: 0.1,
+                     delay: 0.5,
+                     scrollTrigger: {
+                         trigger: getInTouchHero,
+                         start: "top 80%",
+                         toggleActions: "play none none none"
+                     }
+                 });
+             }
+
+             // Animate left content
+             const getInTouchLeft = document.querySelector('.get-in-touch-left');
+             if (getInTouchLeft) {
+                 gsap.fromTo(getInTouchLeft, {
+                     opacity: 0,
+                     x: -50
+                 }, {
+                     opacity: 1,
+                     x: 0,
+                     duration: 0.8,
+                     scrollTrigger: {
+                         trigger: getInTouchLeft,
+                         start: "top 80%",
+                         toggleActions: "play none none none"
+                     }
+                 });
+             }
+
+             // Animate form fields
+             const formFields = document.querySelectorAll('.get-in-touch-form .form-field-group');
+             formFields.forEach((field, index) => {
+                 gsap.fromTo(field, {
+                     opacity: 0,
+                     y: 30
+                 }, {
+                     opacity: 1,
+                     y: 0,
+                     duration: 0.6,
+                     delay: 0.2 + (index * 0.1),
+                     scrollTrigger: {
+                         trigger: '.get-in-touch-right',
+                         start: "top 80%",
+                         toggleActions: "play none none none"
+                     }
+                 });
+             });
+         });
+
+         // Get In Touch Form Submission
+         const getInTouchForm = document.getElementById('getInTouchForm');
+         if (getInTouchForm) {
+             getInTouchForm.addEventListener('submit', (e) => {
+                 e.preventDefault();
+                 const formData = new FormData(getInTouchForm);
+                 const data = Object.fromEntries(formData);
+                 console.log('Get in Touch form submitted:', data);
+                 
+                 // You can add your form submission logic here
+                 // For example, using fetch to send to an API
+                 
+                 // Show success message
+                 alert('Thank you for reaching out! We\'ll get back to you soon.');
+                 getInTouchForm.reset();
+                 
+                 // Form reset handled by browser
+             });
          }
 
          // Contact Form Animation - Declare variables first

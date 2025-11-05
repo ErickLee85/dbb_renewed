@@ -627,6 +627,151 @@
             transition: fill 0.3s ease;
         }
 
+        /* Get In Touch Section */
+        .get-in-touch-section {
+            background: var(--dark);
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .get-in-touch-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .get-in-touch-hero {
+            font-size: 6rem;
+            font-weight: 400;
+            color: var(--light);
+            text-align: center;
+            margin-bottom: 6rem;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+
+        .get-in-touch-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .get-in-touch-left {
+            color: var(--light);
+        }
+
+        .get-in-touch-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 3rem;
+        }
+
+        .get-in-touch-email-alt {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .get-in-touch-phone-alt {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .email-link {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .email-link:hover {
+            color: var(--light);
+            border-bottom-color: var(--light);
+        }
+
+        .get-in-touch-right {
+            background: transparent;
+        }
+
+        .get-in-touch-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-field-group {
+            position: relative;
+        }
+
+        .form-field-group input,
+        .form-field-group textarea {
+            width: 100%;
+            padding: 1rem 0;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            font-size: 1rem;
+            font-family: 'Inter Tight', sans-serif;
+            color: var(--light);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-field-group input::placeholder,
+        .form-field-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-field-group input:focus,
+        .form-field-group textarea:focus {
+            border-bottom-color: var(--primary);
+        }
+
+        .form-field-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Inter Tight', sans-serif;
+        }
+
+        .btn-touch-submit {
+            background: var(--light);
+            color: var(--dark);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Inter Tight', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: fit-content;
+        }
+
+        .btn-touch-submit:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-touch-submit:hover svg {
+            fill: var(--dark);
+            transform: translateX(5px);
+        }
+
+        .btn-touch-submit svg {
+            transition: all 0.3s ease;
+            fill: var(--dark);
+        }
+
         /* Services Section */
         .services-section {
             background: var(--dark);
@@ -1190,6 +1335,32 @@
 
             .review-author-company {
                 font-size: 0.9rem;
+            }
+
+            .get-in-touch-section {
+                padding: 4rem 5%;
+            }
+
+            .get-in-touch-hero {
+                font-size: 3rem;
+                margin-bottom: 3rem;
+            }
+
+            .get-in-touch-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .get-in-touch-description {
+                font-size: 1rem;
+            }
+
+            .get-in-touch-email-alt {
+                font-size: 1rem;
+            }
+
+            .btn-touch-submit {
+                width: 100%;
             }
 
             .trusted-bar {
