@@ -346,7 +346,7 @@
         }
 
         .hero-slide:nth-child(1) img {
-            object-position: top right
+            object-position: right;
         }
 
         .hero-slide::before {
@@ -467,6 +467,164 @@
         @keyframes scroll {
             0% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            background: var(--light);
+            padding: 8rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-heading {
+            font-size: 4rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 4rem;
+            line-height: 1.2;
+        }
+
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            height: 450px;
+        }
+
+        .reviews-track {
+            display: flex;
+            gap: 3rem;
+            height: 100%;
+            position: relative;
+        }
+
+        .review-card {
+            min-width: 100%;
+            height: 100%;
+            background: #fafafa;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            filter: blur(10px);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .review-card.active {
+            opacity: 1;
+            filter: blur(0px);
+            position: relative;
+        }
+
+        .review-stars {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .review-text {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            flex-grow: 1;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+        }
+
+        .review-author {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 1.5rem;
+        }
+
+        .review-author-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .review-author-company {
+            font-size: 0.95rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .reviews-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding: 0 5%;
+        }
+
+        .reviews-dots {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .review-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .review-dot:hover {
+            background: rgba(0, 0, 0, 0.4);
+            transform: scale(1.2);
+        }
+
+        .review-dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .reviews-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .review-nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--dark);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .review-nav-btn:hover {
+            background: var(--dark);
+        }
+
+        .review-nav-btn:hover svg {
+            fill: var(--light);
+        }
+
+        .review-nav-btn svg {
+            transition: fill 0.3s ease;
         }
 
         /* Services Section */
@@ -999,6 +1157,39 @@
 
             .stats-cta {
                 flex-direction: column;
+            }
+
+            .reviews-section {
+                padding: 4rem 5%;
+            }
+
+            .reviews-heading {
+                font-size: 2.5rem;
+                margin-bottom: 3rem;
+            }
+
+            .reviews-container {
+                height: 350px;
+            }
+
+            .review-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .review-text {
+                font-size: 1.2rem;
+            }
+
+            .reviews-nav {
+                display: none;
+            }
+
+            .review-author-name {
+                font-size: 1rem;
+            }
+
+            .review-author-company {
+                font-size: 0.9rem;
             }
 
             .trusted-bar {

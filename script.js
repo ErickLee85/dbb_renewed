@@ -126,15 +126,36 @@
                                 toggleActions: "play none none none",
                         }
                     })
-                    gsap.fromTo(split6.words,{opacity:0},{opacity:1,duration:1,stagger:0.1,delay:1.2,
-                        scrollTrigger: {
-                                trigger: ".stats-section",
-                                start: "top 50%",
-                                toggleActions: "play none none none",
-                        }
-                    })
+                     gsap.fromTo(split6.words,{opacity:0},{opacity:1,duration:1,stagger:0.1,delay:1.2,
+                         scrollTrigger: {
+                                 trigger: ".stats-section",
+                                 start: "top 50%",
+                                 toggleActions: "play none none none",
+                         }
+                     })
 
-                    // Services Section Pin Animation
+                     // Animate reviews heading on scroll
+                     const reviewsHeading = document.querySelector('.reviews-heading');
+                     if (reviewsHeading) {
+                         let splitReviewsHeading = SplitText.create([".reviews-heading"], { type: "words" });
+                         gsap.fromTo(splitReviewsHeading.words, {
+                             opacity: 0,
+                             filter: 'blur(10px)'
+                         }, {
+                             opacity: 1,
+                             filter: 'blur(0px)',
+                             duration: 1,
+                             stagger: 0.1,
+                             delay: 0.5,
+                             scrollTrigger: {
+                                 trigger: reviewsHeading,
+                                 start: "top 80%",
+                                 toggleActions: "play none none none"
+                             }
+                         });
+                     }
+
+                     // Services Section Pin Animation
                     const servicesSection = document.querySelector('.services-section');
                     const serviceItems = document.querySelectorAll('.service-item');
                     const servicesHeading = document.querySelector('.services-heading');
@@ -418,18 +439,95 @@
             currentSlide = index;
         }
 
-        // Auto-play (optional - every 5 seconds)
-        setInterval(() => {
-            if(slideClicked) {
-                slideClicked = false
-                return;
-            }
-            const nextIndex = (currentSlide + 1) % slides.length;
-            goToSlide(nextIndex, 'right');
-        }, 5000);
+         // Auto-play (optional - every 5 seconds)
+         setInterval(() => {
+             if(slideClicked) {
+                 slideClicked = false
+                 return;
+             }
+             const nextIndex = (currentSlide + 1) % slides.length;
+             goToSlide(nextIndex, 'right');
+         }, 5000);
 
+         // Reviews Section Animation
+         const reviewCards = document.querySelectorAll('.review-card');
+         const reviewDots = document.querySelectorAll('.review-dot');
+         const reviewNavPrev = document.querySelector('.review-nav-prev');
+         const reviewNavNext = document.querySelector('.review-nav-next');
+         
+         if (reviewCards.length > 0 && reviewDots.length > 0) {
+             let currentReview = 0;
+             let isReviewAnimating = false;
 
-        // Contact Form Animation - Declare variables first
+             function showReview(index) {
+                 if (isReviewAnimating || index === currentReview) return;
+                 isReviewAnimating = true;
+
+                 const oldCard = reviewCards[currentReview];
+                 const newCard = reviewCards[index];
+
+                 // Animate out current card with blur/opacity
+                 gsap.to(oldCard, {
+                     opacity: 0,
+                     filter: 'blur(10px)',
+                     duration: 0.6,
+                     ease: 'power2.in',
+                     onComplete: () => {
+                         oldCard.classList.remove('active');
+                     }
+                 });
+
+                 // Animate in new card with blur/opacity
+                 gsap.fromTo(newCard, 
+                     { opacity: 0, filter: 'blur(10px)' },
+                     { 
+                         opacity: 1,
+                         filter: 'blur(0px)',
+                         duration: 0.6,
+                         ease: 'power2.out',
+                         delay: 0.1,
+                         onComplete: () => {
+                             newCard.classList.add('active');
+                             isReviewAnimating = false;
+                         }
+                     }
+                 );
+
+                 // Update dots
+                 reviewDots[currentReview].classList.remove('active');
+                 reviewDots[index].classList.add('active');
+
+                 currentReview = index;
+             }
+
+             // Initialize first review
+             reviewCards[0].classList.add('active');
+             gsap.set(reviewCards[0], { opacity: 1, filter: 'blur(0px)' });
+
+             // Dot navigation
+             reviewDots.forEach((dot, index) => {
+                 dot.addEventListener('click', () => {
+                     showReview(index);
+                 });
+             });
+
+             // Arrow navigation
+             if (reviewNavPrev) {
+                 reviewNavPrev.addEventListener('click', () => {
+                     const prevIndex = (currentReview - 1 + reviewCards.length) % reviewCards.length;
+                     showReview(prevIndex);
+                 });
+             }
+
+             if (reviewNavNext) {
+                 reviewNavNext.addEventListener('click', () => {
+                     const nextIndex = (currentReview + 1) % reviewCards.length;
+                     showReview(nextIndex);
+                 });
+             }
+         }
+
+         // Contact Form Animation - Declare variables first
         const contactOverlay = document.getElementById('contactOverlay');
         const contactFormPanel = document.getElementById('contactFormPanel');
         const contactCloseBtn = document.getElementById('contactCloseBtn');
