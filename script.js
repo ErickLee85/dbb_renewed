@@ -551,6 +551,46 @@
                  });
              }
 
+             // Animate arrow indicator
+             const heroArrowIndicator = document.getElementById('heroArrowIndicator');
+             if (heroArrowIndicator) {
+                 gsap.fromTo(heroArrowIndicator, {
+                     opacity: 0,
+                     scale: 0
+                 }, {
+                     opacity: 1,
+                     scale: 1,
+                     duration: 0.6,
+                     delay: 1.2,
+                     ease: 'back.out(1.7)',
+                     scrollTrigger: {
+                         trigger: getInTouchHero,
+                         start: "top 80%",
+                         toggleActions: "play none none none"
+                     }
+                 });
+
+                 // Click handler to scroll to form
+                 heroArrowIndicator.addEventListener('click', () => {
+                     const form = document.querySelector('.get-in-touch-right');
+                     if (form) {
+                         if (isMobile) {
+                             form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                         } else {
+                             if (smoother) {
+                                 smoother.scrollTo('.get-in-touch-right', true, "top top");
+                             } else {
+                                 gsap.to(window, {
+                                     duration: 1,
+                                     scrollTo: form,
+                                     ease: 'power3.inOut'
+                                 });
+                             }
+                         }
+                     }
+                 });
+             }
+
              // Animate left content
              const getInTouchLeft = document.querySelector('.get-in-touch-left');
              if (getInTouchLeft) {

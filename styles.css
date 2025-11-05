@@ -5,7 +5,7 @@
         }
 
         :root {
-            --primary: #4A7BA7;
+            --primary: #0091ff;
             --dark: #1a1a1a;
             --light: #ffffff;
             --gray: #666;
@@ -532,7 +532,7 @@
         }
 
         .review-text {
-            font-size: 1.8rem;
+            font-size: 2.0rem;
             line-height: 1.8;
             color: var(--dark);
             margin-bottom: 2rem;
@@ -647,6 +647,40 @@
             margin-bottom: 6rem;
             line-height: 1.1;
             letter-spacing: -2px;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .hero-arrow-indicator {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin-left: 1rem;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-arrow-indicator svg {
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: rotate(45deg);
+        }
+
+        .hero-arrow-indicator:hover {
+            background: var(--light);
+            transform: scale(1.1);
+        }
+
+        .hero-arrow-indicator:hover svg {
+            fill: var(--dark);
+            transform: rotate(0deg);
         }
 
         .get-in-touch-content {
@@ -1344,6 +1378,17 @@
             .get-in-touch-hero {
                 font-size: 3rem;
                 margin-bottom: 3rem;
+            }
+
+            .hero-arrow-indicator {
+                width: 50px;
+                height: 50px;
+                margin-left: 0.5rem;
+            }
+
+            .hero-arrow-indicator svg {
+                width: 20px;
+                height: 20px;
             }
 
             .get-in-touch-content {
