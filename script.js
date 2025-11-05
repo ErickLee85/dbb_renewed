@@ -102,6 +102,126 @@
                                 toggleActions: "play none none none",
                         }
                     })
+
+                    // Services Section Pin Animation
+                    const servicesSection = document.querySelector('.services-section');
+                    const serviceItems = document.querySelectorAll('.service-item');
+                    const servicesHeading = document.querySelector('.services-heading');
+                    
+                    if (servicesSection && serviceItems.length > 0) {
+                        // Animate the heading with SplitText (same as hero-tagline)
+                        if (servicesHeading) {
+                            let splitServices = SplitText.create([".services-heading"], { type: "words" });
+                            gsap.fromTo(splitServices.words, {
+                                opacity: 0,
+                                filter: 'blur(10px)'
+                            }, {
+                                opacity: 1,
+                                filter: 'blur(0px)',
+                                duration: 1,
+                                stagger: 0.1,
+                                delay: 0.5,
+                                scrollTrigger: {
+                                    trigger: servicesHeading,
+                                    toggleActions: "play none none none",
+                                    markers: true,
+                                }
+                            });
+                        }
+
+                        // Pin the services container
+                        ScrollTrigger.create({
+                            trigger: servicesSection,
+                            start: "top top",
+                            end: "+=4000",
+                            pin: ".services-container",
+                            anticipatePin: 1,
+                            scrub: 1,
+                        });
+
+                        // Animate each service item as it comes into view
+                        serviceItems.forEach((item, index) => {
+                            const title = item.querySelector('.service-title');
+                            const description = item.querySelector('.service-description');
+                            const number = item.querySelector('.service-number');
+                            
+                            // Alternate between left and right animation
+                            const isEven = index % 2 === 0;
+                            const xOffset = isEven ? -200 : 200;
+                            
+                            // Set initial states - animate from x-axis
+                            gsap.set([title, description], { 
+                                opacity: 0, 
+                                x: xOffset,
+                                filter: 'blur(10px)'
+                            });
+                            gsap.set(number, { 
+                                opacity: 0, 
+                                x: xOffset,
+                                scale: 0.8 
+                            });
+                            gsap.set(item, {
+                                x: 0
+                            });
+
+                            // Create timeline for each service
+                            const serviceTimeline = gsap.timeline({
+                                scrollTrigger: {
+                                    trigger: servicesSection,
+                                    start: `top+=${index * 800} top`,
+                                    end: `top+=${(index + 1) * 800} top`,
+                                    scrub: 1,
+                                    onEnter: () => {
+                                        // Remove active class from all items
+                                        serviceItems.forEach(si => si.classList.remove('active'));
+                                        // Add active class to current item
+                                        item.classList.add('active');
+                                    },
+                                    onEnterBack: () => {
+                                        serviceItems.forEach(si => si.classList.remove('active'));
+                                        item.classList.add('active');
+                                    },
+                                    onLeave: () => {
+                                        if (index < serviceItems.length - 1) {
+                                            item.classList.remove('active');
+                                        }
+                                    },
+                                    onLeaveBack: () => {
+                                        if (index > 0) {
+                                            item.classList.remove('active');
+                                        }
+                                    }
+                                }
+                            });
+
+                            // Animate from x-axis - number first, then title, then description
+                            serviceTimeline
+                                .to(number, {
+                                    opacity: 1,
+                                    x: 0,
+                                    scale: 1,
+                                    duration: 0.8,
+                                    ease: 'power3.out'
+                                })
+                                .to(title, {
+                                    opacity: 1,
+                                    x: 0,
+                                    filter: 'blur(0px)',
+                                    duration: 1,
+                                    ease: 'power3.out'
+                                }, '-=0.4')
+                                .to(description, {
+                                    opacity: 1,
+                                    x: 0,
+                                    filter: 'blur(0px)',
+                                    duration: 1,
+                                    ease: 'power3.out'
+                                }, '-=0.6');
+                        });
+
+                        // Set first service as active initially
+                        serviceItems[0]?.classList.add('active');
+                    }
                })
 
              // Number counter animation

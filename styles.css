@@ -515,6 +515,97 @@
             100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
         }
 
+        /* Services Section */
+        .services-section {
+            background: var(--dark);
+            min-height: 500vh;
+            position: relative;
+            padding: 0;
+        }
+
+        .services-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .services-content {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 5%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .services-heading {
+            font-size: 4rem;
+            font-weight: 400;
+            color: var(--light);
+            text-align: center;
+            letter-spacing: -1px;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            z-index: 1;
+        }
+
+        .service-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .service-item.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .service-number {
+            font-size: 8rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.05);
+            line-height: 1;
+            margin-bottom: 1rem;
+            font-family: 'Inter Tight', sans-serif;
+            letter-spacing: -3px;
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: 4.5rem;
+            font-weight: 400;
+            color: var(--light);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            letter-spacing: -2px;
+            text-align: center;
+        }
+
+        .service-description {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            max-width: 700px;
+            font-weight: 400;
+            margin: 0 auto;
+            text-align: center;
+        }
+
         /* Stats Section */
         .stats-section {
             background: var(--light);
@@ -967,9 +1058,67 @@
                 flex-wrap: wrap;
                 gap: 1.5rem;
             }
+
+            .services-section {
+                min-height: auto;
+                padding: 4rem 0;
+            }
+
+            .services-container {
+                position: relative;
+                height: auto;
+                padding: 2rem 0;
+            }
+
+            .service-item {
+                position: relative;
+                transform: none;
+                top: auto;
+                left: auto;
+                margin-bottom: 4rem;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .service-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .service-number {
+                font-size: 5rem;
+            }
+
+            .service-title {
+                font-size: 2.5rem;
+            }
+
+            .service-description {
+                font-size: 1.1rem;
+            }
+
+            .services-heading {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-bottom: 3rem;
+                font-size: 2.5rem;
+            }
         }
         @media(max-width:643px) {
             .stats-image {
                 max-width: calc(100vw - 50px);
+            }
+
+            .service-title {
+                font-size: 2rem;
+            }
+
+            .service-number {
+                font-size: 4rem;
+            }
+
+            .services-heading {
+                font-size: 2rem;
             }
         }
