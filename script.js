@@ -319,6 +319,35 @@
 
         });
 
+        // Custom smooth scroll function using requestAnimationFrame
+        function smoothScrollTo(element, duration = 800) {
+            const startPosition = window.pageYOffset;
+            const targetPosition = element.getBoundingClientRect().top + startPosition - 80; // Offset for header
+            const distance = targetPosition - startPosition;
+            let startTime = null;
+
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                const ease = easeInOutCubic(progress);
+
+                window.scrollTo(0, startPosition + distance * ease);
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                } else {
+                    window.scrollTo(0, targetPosition);
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -336,8 +365,13 @@
                     
                     // Use different scrolling method based on device
                     if (isMobile) {
-                        // Use native smooth scroll on mobile
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Special handling for Services link on mobile - use custom smooth scroll
+                        if (href === '#services') {
+                            smoothScrollTo(target);
+                        } else {
+                            // Use native smooth scroll on mobile for other links
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     } else {
                         // Use GSAP scrollTo on desktop
                         if (smoother) {

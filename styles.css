@@ -491,7 +491,7 @@
             margin: 0 auto;
             position: relative;
             overflow: hidden;
-            height: 450px;
+            height: 600px;
         }
 
         .reviews-track {
@@ -540,8 +540,8 @@
             flex-grow: 1;
             overflow: hidden;
             display: -webkit-box;
-            -webkit-line-clamp: 4;
-            line-clamp: 4;
+            -webkit-line-clamp: 8;
+            line-clamp: 8;
             -webkit-box-orient: vertical;
         }
 
@@ -712,6 +712,13 @@
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .get-in-touch-hours {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
         }
 
         .email-link {
@@ -876,6 +883,7 @@
             letter-spacing: -3px;
             text-align: left;
         }
+
 
         .service-title {
             font-size: 4.5rem;
@@ -1348,7 +1356,7 @@
             }
 
             .reviews-container {
-                height: 350px;
+                height: 500px;
             }
 
             .review-card {
