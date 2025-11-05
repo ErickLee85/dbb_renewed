@@ -1,20 +1,51 @@
  gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother);
 
+        // Detect mobile/touch devices
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                        (window.innerWidth <= 943) || 
+                        ('ontouchstart' in window);
+
+        // Global smoother variable
+        let smoother = null;
+
         // Hero animations on load with SplitText
         window.addEventListener('load', () => {
             // Split the tagline text
           
                 const infoBtn = document.querySelector('.btn-secondary')
                 let words = document.querySelectorAll(".trusted-logo")
-                let smoother = ScrollSmoother.create({
-                    wrapper:'#smooth-wrapper',
-                    content:'#smooth-content',
-                    smooth:2
-                })
+                
+                // Only create ScrollSmoother on desktop devices
+                if (!isMobile) {
+                    smoother = ScrollSmoother.create({
+                        wrapper:'#smooth-wrapper',
+                        content:'#smooth-content',
+                        smooth:2
+                    });
+                    // Refresh ScrollTrigger after ScrollSmoother is created
+                    ScrollTrigger.refresh();
+                } else {
+                    // On mobile, add a class to enable normal scrolling
+                    const smoothWrapper = document.getElementById('smooth-wrapper');
+                    if (smoothWrapper) {
+                        smoothWrapper.classList.add('mobile-scroll');
+                    }
+                }
 
-                infoBtn.addEventListener('click',(e) => {
-                    smoother.scrollTo(".stats-section", true, "center center")
-                })
+                if (infoBtn) {
+                    infoBtn.addEventListener('click',(e) => {
+                        e.preventDefault();
+                        const statsSection = document.querySelector(".stats-section");
+                        if (statsSection) {
+                            if (smoother) {
+                                smoother.scrollTo(".stats-section", true, "center center");
+                            } else {
+                                // Fallback for mobile
+                                statsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }
+                    });
+                }
                document.fonts.ready.then(() => {
                         let split = SplitText.create([".hero-tagline"], { type: "words" });
                         let split2 = SplitText.create(".hero-subtitle", {type:"words"})
@@ -124,20 +155,22 @@
                                 scrollTrigger: {
                                     trigger: servicesHeading,
                                     toggleActions: "play none none none",
-                                    markers: true,
+                                    markers: false
                                 }
                             });
                         }
 
-                        // Pin the services container
-                        ScrollTrigger.create({
-                            trigger: servicesSection,
-                            start: "top top",
-                            end: "+=4000",
-                            pin: ".services-container",
-                            anticipatePin: 1,
-                            scrub: 1,
-                        });
+                        // Only pin on desktop devices
+                        if (!isMobile) {
+                            ScrollTrigger.create({
+                                trigger: servicesSection,
+                                start: "top top",
+                                end: "+=4000",
+                                pin: ".services-container",
+                                anticipatePin: 1,
+                                scrub: 1
+                            });
+                        }
 
                         // Animate each service item as it comes into view
                         serviceItems.forEach((item, index) => {
@@ -145,82 +178,116 @@
                             const description = item.querySelector('.service-description');
                             const number = item.querySelector('.service-number');
                             
-                            // Alternate between left and right animation
-                            const isEven = index % 2 === 0;
-                            const xOffset = isEven ? -200 : 200;
-                            
-                            // Set initial states - animate from x-axis
-                            gsap.set([title, description], { 
-                                opacity: 0, 
-                                x: xOffset,
-                                filter: 'blur(10px)'
-                            });
-                            gsap.set(number, { 
-                                opacity: 0, 
-                                x: xOffset,
-                                scale: 0.8 
-                            });
-                            gsap.set(item, {
-                                x: 0
-                            });
+                            // On mobile, use simpler animations without scrub
+                            if (isMobile) {
+                                // Set initial states
+                                gsap.set([title, description], { 
+                                    opacity: 0, 
+                                    y: 30,
+                                    filter: 'blur(10px)'
+                                });
+                                gsap.set(number, { 
+                                    opacity: 0, 
+                                    y: 30,
+                                    scale: 0.8 
+                                });
 
-                            // Create timeline for each service
-                            const serviceTimeline = gsap.timeline({
-                                scrollTrigger: {
-                                    trigger: servicesSection,
-                                    start: `top+=${index * 800} top`,
-                                    end: `top+=${(index + 1) * 800} top`,
-                                    scrub: 1,
-                                    onEnter: () => {
-                                        // Remove active class from all items
-                                        serviceItems.forEach(si => si.classList.remove('active'));
-                                        // Add active class to current item
-                                        item.classList.add('active');
-                                    },
-                                    onEnterBack: () => {
-                                        serviceItems.forEach(si => si.classList.remove('active'));
-                                        item.classList.add('active');
-                                    },
-                                    onLeave: () => {
-                                        if (index < serviceItems.length - 1) {
-                                            item.classList.remove('active');
-                                        }
-                                    },
-                                    onLeaveBack: () => {
-                                        if (index > 0) {
-                                            item.classList.remove('active');
-                                        }
-                                    }
-                                }
-                            });
-
-                            // Animate from x-axis - number first, then title, then description
-                            serviceTimeline
-                                .to(number, {
+                                // Simple scroll-triggered animation for mobile
+                                gsap.to([number, title, description], {
                                     opacity: 1,
-                                    x: 0,
+                                    y: 0,
+                                    filter: 'blur(0px)',
                                     scale: 1,
                                     duration: 0.8,
-                                    ease: 'power3.out'
-                                })
-                                .to(title, {
-                                    opacity: 1,
-                                    x: 0,
-                                    filter: 'blur(0px)',
-                                    duration: 1,
-                                    ease: 'power3.out'
-                                }, '-=0.4')
-                                .to(description, {
-                                    opacity: 1,
-                                    x: 0,
-                                    filter: 'blur(0px)',
-                                    duration: 1,
-                                    ease: 'power3.out'
-                                }, '-=0.6');
+                                    stagger: 0.2,
+                                    ease: 'power3.out',
+                                    scrollTrigger: {
+                                        trigger: item,
+                                        start: "top 80%",
+                                        toggleActions: "play none none none"
+                                    }
+                                });
+                            } else {
+                                // Desktop animation with scrub
+                                // Alternate between left and right animation
+                                const isEven = index % 2 === 0;
+                                const xOffset = isEven ? -200 : 200;
+                                
+                                // Set initial states - animate from x-axis
+                                gsap.set([title, description], { 
+                                    opacity: 0, 
+                                    x: xOffset,
+                                    filter: 'blur(10px)'
+                                });
+                                gsap.set(number, { 
+                                    opacity: 0, 
+                                    x: xOffset,
+                                    scale: 0.8 
+                                });
+                                gsap.set(item, {
+                                    x: 0
+                                });
+
+                                // Create timeline for each service
+                                const serviceTimeline = gsap.timeline({
+                                    scrollTrigger: {
+                                        trigger: servicesSection,
+                                        start: `top+=${index * 800} top`,
+                                        end: `top+=${(index + 1) * 800} top`,
+                                        scrub: 1,
+                                        onEnter: () => {
+                                            // Remove active class from all items
+                                            serviceItems.forEach(si => si.classList.remove('active'));
+                                            // Add active class to current item
+                                            item.classList.add('active');
+                                        },
+                                        onEnterBack: () => {
+                                            serviceItems.forEach(si => si.classList.remove('active'));
+                                            item.classList.add('active');
+                                        },
+                                        onLeave: () => {
+                                            if (index < serviceItems.length - 1) {
+                                                item.classList.remove('active');
+                                            }
+                                        },
+                                        onLeaveBack: () => {
+                                            if (index > 0) {
+                                                item.classList.remove('active');
+                                            }
+                                        }
+                                    }
+                                });
+
+                                // Animate from x-axis - number first, then title, then description
+                                serviceTimeline
+                                    .to(number, {
+                                        opacity: 1,
+                                        x: 0,
+                                        scale: 1,
+                                        duration: 0.8,
+                                        ease: 'power3.out'
+                                    })
+                                    .to(title, {
+                                        opacity: 1,
+                                        x: 0,
+                                        filter: 'blur(0px)',
+                                        duration: 1,
+                                        ease: 'power3.out'
+                                    }, '-=0.4')
+                                    .to(description, {
+                                        opacity: 1,
+                                        x: 0,
+                                        filter: 'blur(0px)',
+                                        duration: 1,
+                                        ease: 'power3.out'
+                                    }, '-=0.6');
+                            }
                         });
 
-                        // Set first service as active initially
-                        serviceItems[0]?.classList.add('active');
+                        // Set first service as active initially (only on desktop)
+                        if (!isMobile) {
+                            serviceItems[0]?.classList.add('active');
+                        }
                     }
                })
 
@@ -240,16 +307,27 @@
                     // Close mobile menu if open
                     const mobileMenu = document.querySelector('.mobile-menu');
                     const menuToggle = document.querySelector('.mobile-menu-toggle');
-                    if (mobileMenu.classList.contains('active')) {
+                    if (mobileMenu && mobileMenu.classList.contains('active')) {
                         mobileMenu.classList.remove('active');
                         menuToggle.classList.remove('active');
                     }
                     
-                    gsap.to(window, {
-                        duration: 1,
-                        scrollTo: target,
-                        ease: 'power3.inOut'
-                    });
+                    // Use different scrolling method based on device
+                    if (isMobile) {
+                        // Use native smooth scroll on mobile
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        // Use GSAP scrollTo on desktop
+                        if (smoother) {
+                            smoother.scrollTo(target, true, "top top");
+                        } else {
+                            gsap.to(window, {
+                                duration: 1,
+                                scrollTo: target,
+                                ease: 'power3.inOut'
+                            });
+                        }
+                    }
                 }
             });
         });
@@ -303,9 +381,6 @@
 
         // Hero Image Slider
         const slides = document.querySelectorAll('.hero-slide');
-        const dots = document.querySelectorAll('.hero-slider-dots .dot');
-        const prevBtn = document.querySelector('.hero-arrow-prev');
-        const nextBtn = document.querySelector('.hero-arrow-next');
         let currentSlide = 0;
         let isAnimating = false;
         let slideClicked = false;
@@ -340,33 +415,8 @@
                 }
             );
 
-            // Update dots
-            dots[currentSlide].classList.remove('active');
-            dots[index].classList.add('active');
-
             currentSlide = index;
         }
-
-        // Next button
-        nextBtn.addEventListener('click', () => {
-            const nextIndex = (currentSlide + 1) % slides.length;
-            goToSlide(nextIndex, 'right');
-            slideClicked = true;
-        });
-
-        // Previous button
-        prevBtn.addEventListener('click', () => {
-            const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
-            goToSlide(prevIndex, 'left');
-            slideClicked = true;
-        });
-
-        // Dot navigation
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-            });
-        });
 
         // Auto-play (optional - every 5 seconds)
         setInterval(() => {
@@ -375,21 +425,9 @@
                 return;
             }
             const nextIndex = (currentSlide + 1) % slides.length;
-            goToSlide(nextIndex);
+            goToSlide(nextIndex, 'right');
         }, 5000);
 
-        // Keyboard navigation for hero slider
-        document.addEventListener('keydown', (e) => {
-            const contactOverlay = document.getElementById('contactOverlay');
-            // Only handle arrow keys if contact form is not open
-            if (!contactOverlay || !contactOverlay.classList.contains('active')) {
-                if (e.key === 'ArrowLeft') {
-                    prevBtn.click();
-                } else if (e.key === 'ArrowRight') {
-                    nextBtn.click();
-                }
-            }
-        });
 
         // Contact Form Animation - Declare variables first
         const contactOverlay = document.getElementById('contactOverlay');

@@ -17,6 +17,17 @@
             overflow-x: hidden;
         }
 
+        /* Mobile scroll fix - allow normal scrolling when ScrollSmoother is disabled */
+        #smooth-wrapper.mobile-scroll {
+            height: auto;
+            overflow: visible;
+        }
+
+        #smooth-wrapper.mobile-scroll #smooth-content {
+            position: relative;
+            transform: none !important;
+        }
+
         /* Header */
         header {
             position: fixed;
@@ -354,63 +365,6 @@
             z-index: 1;
         }
 
-        .hero-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .hero-arrow-prev {
-            left: 2rem;
-        }
-
-        .hero-arrow-next {
-            right: 2rem;
-        }
-
-        .hero-slider-dots {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.8rem;
-            z-index: 10;
-        }
-
-        .hero-slider-dots .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .hero-slider-dots .dot:hover {
-            background: rgba(255, 255, 255, 0.6);
-            transform: scale(1.2);
-        }
-
-        .hero-slider-dots .dot.active {
-            background: var(--light);
-            width: 30px;
-            border-radius: 6px;
-        }
-
         .hero-cta {
             display: flex;
             gap: 1.5rem;
@@ -565,7 +519,7 @@
             transform: translate(-50%, -50%);
             width: 100%;
             max-width: 900px;
-            text-align: center;
+            text-align: left;
             opacity: 0;
             visibility: hidden;
         }
@@ -583,7 +537,7 @@
             margin-bottom: 1rem;
             font-family: 'Inter Tight', sans-serif;
             letter-spacing: -3px;
-            text-align: center;
+            text-align: left;
         }
 
         .service-title {
@@ -593,7 +547,7 @@
             margin-bottom: 2rem;
             line-height: 1.2;
             letter-spacing: -2px;
-            text-align: center;
+            text-align: left;
         }
 
         .service-description {
@@ -602,8 +556,7 @@
             line-height: 1.8;
             max-width: 700px;
             font-weight: 400;
-            margin: 0 auto;
-            text-align: center;
+            text-align: left;
         }
 
         /* Stats Section */
