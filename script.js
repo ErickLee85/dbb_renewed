@@ -871,8 +871,8 @@
         // FAQ Bento Box Animation
         document.fonts.ready.then(() => {
             const faqTitle = document.querySelector('.faq-title');
-            if (faqTitle) {
-                let splitFaqTitle = SplitText.create([".faq-title"], { type: "words" });
+            
+                let splitFaqTitle = SplitText.create(".faq-title", { type: "words" });
                 gsap.fromTo(splitFaqTitle.words, {
                     opacity: 0,
                     filter: 'blur(10px)'
@@ -881,29 +881,37 @@
                     filter: 'blur(0px)',
                     duration: 1,
                     stagger: 0.1,
-                    delay: 0.5,
                     scrollTrigger: {
-                        trigger: faqTitle,
+                        trigger: ".faq-header",
                         start: "top 80%",
                         toggleActions: "play none none none"
                     }
                 });
-            }
+            
+
+               const faqSubtext = document.querySelector('.faq-subtext');
+                if (faqSubtext) {
+                    gsap.fromTo(faqSubtext, {
+                        opacity: 0,
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        scrollTrigger: {
+                            trigger: faqSubtext,
+                            start: "top 85%",
+                            toggleActions: "play none none none"
+                        }
+                    });
+                }
 
             // Animate FAQ bento cards on scroll
             const faqBentoCards = document.querySelectorAll('.faq-bento-card');
             faqBentoCards.forEach((card, index) => {
                 gsap.fromTo(card, {
                     opacity: 0,
-                    y: 50,
-                    scale: 0.9
                 }, {
                     opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.8,
                     delay: index * 0.1,
-                    ease: 'power3.out',
                     scrollTrigger: {
                         trigger: card,
                         start: "top 85%",
@@ -913,38 +921,5 @@
             });
 
             // Animate FAQ subtitle
-            const faqSubtext = document.querySelector('.faq-subtext');
-            if (faqSubtext) {
-                gsap.fromTo(faqSubtext, {
-                    opacity: 0,
-                    y: 20
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    scrollTrigger: {
-                        trigger: faqSubtext,
-                        start: "top 85%",
-                        toggleActions: "play none none none"
-                    }
-                });
-            }
-
-            // Animate FAQ header background
-            const faqHeader = document.querySelector('.faq-header');
-            if (faqHeader) {
-                gsap.fromTo(faqHeader, {
-                    opacity: 0,
-                    y: 30
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    scrollTrigger: {
-                        trigger: faqHeader,
-                        start: "top 80%",
-                        toggleActions: "play none none none"
-                    }
-                });
-            }
+         
         });

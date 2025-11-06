@@ -1652,6 +1652,7 @@
             position: relative;
             overflow: hidden;
             transition: all 500ms ease;
+            border:1px solid #aeaeae;
             background: linear-gradient(145deg, #f0f0f0, #cacaca);
             box-shadow:  5px 5px 7px #707070,
             -5px -5px 7px #ffffff;
@@ -1718,7 +1719,7 @@
         }
 
         .faq-card-title {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             color: rgba(0, 0, 0, 0.9);
             margin-bottom: 0.5rem;
