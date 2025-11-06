@@ -868,87 +868,7 @@
         }
         } // End of contact form initialization check
 
-        // FAQ Accordion and Search Functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const faqItems = document.querySelectorAll('.faq-item');
-            const faqSearchInput = document.getElementById('faqSearch');
-
-            if (faqItems.length > 0) {
-                // Accordion toggle functionality
-                faqItems.forEach(item => {
-                    const question = item.querySelector('.faq-question');
-                    if (question) {
-                        question.addEventListener('click', () => {
-                            const isActive = item.classList.contains('active');
-                            
-                            // Close all items
-                            faqItems.forEach(faqItem => {
-                                faqItem.classList.remove('active');
-                            });
-                            
-                            // Open clicked item if it wasn't active
-                            if (!isActive) {
-                                item.classList.add('active');
-                            }
-                        });
-                    }
-                });
-
-                // FAQ Search Functionality
-                const faqSearchClear = document.getElementById('faqSearchClear');
-                
-                // Function to toggle clear button visibility
-                const toggleClearButton = () => {
-                    if (faqSearchClear && faqSearchInput) {
-                        if (faqSearchInput.value.trim().length > 0) {
-                            faqSearchClear.classList.add('visible');
-                        } else {
-                            faqSearchClear.classList.remove('visible');
-                        }
-                    }
-                };
-
-                // Function to perform search
-                const performSearch = (searchTerm) => {
-                    faqItems.forEach(item => {
-                        const questionText = item.getAttribute('data-question')?.toLowerCase() || '';
-                        const answerElement = item.querySelector('.faq-answer p');
-                        const answerText = answerElement ? answerElement.textContent.toLowerCase() : '';
-                        
-                        // Check if search term matches question or answer
-                        if (searchTerm === '' || questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
-                };
-
-                if (faqSearchInput) {
-                    // Show/hide clear button on input
-                    faqSearchInput.addEventListener('input', (e) => {
-                        const searchTerm = e.target.value.toLowerCase().trim();
-                        toggleClearButton();
-                        performSearch(searchTerm);
-                    });
-
-                    // Show/hide clear button on page load
-                    toggleClearButton();
-                }
-
-                // Clear button functionality
-                if (faqSearchClear && faqSearchInput) {
-                    faqSearchClear.addEventListener('click', () => {
-                        faqSearchInput.value = '';
-                        faqSearchInput.focus();
-                        toggleClearButton();
-                        performSearch('');
-                    });
-                }
-            }
-        });
-
-        // FAQ Section Animation
+        // FAQ Bento Box Animation
         document.fonts.ready.then(() => {
             const faqTitle = document.querySelector('.faq-title');
             if (faqTitle) {
@@ -970,29 +890,32 @@
                 });
             }
 
-            // Animate FAQ items on scroll
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach((item, index) => {
-                gsap.fromTo(item, {
+            // Animate FAQ bento cards on scroll
+            const faqBentoCards = document.querySelectorAll('.faq-bento-card');
+            faqBentoCards.forEach((card, index) => {
+                gsap.fromTo(card, {
                     opacity: 0,
-                    y: 30
+                    y: 50,
+                    scale: 0.9
                 }, {
                     opacity: 1,
                     y: 0,
-                    duration: 0.6,
+                    scale: 1,
+                    duration: 0.8,
                     delay: index * 0.1,
+                    ease: 'power3.out',
                     scrollTrigger: {
-                        trigger: item,
+                        trigger: card,
                         start: "top 85%",
                         toggleActions: "play none none none"
                     }
                 });
             });
 
-            // Animate search input
-            const faqSearchContainer = document.querySelector('.faq-search-container');
-            if (faqSearchContainer) {
-                gsap.fromTo(faqSearchContainer, {
+            // Animate FAQ subtitle
+            const faqSubtext = document.querySelector('.faq-subtext');
+            if (faqSubtext) {
+                gsap.fromTo(faqSubtext, {
                     opacity: 0,
                     y: 20
                 }, {
@@ -1000,7 +923,7 @@
                     y: 0,
                     duration: 0.6,
                     scrollTrigger: {
-                        trigger: faqSearchContainer,
+                        trigger: faqSubtext,
                         start: "top 85%",
                         toggleActions: "play none none none"
                     }

@@ -9,6 +9,7 @@
             --dark: #1a1a1a;
             --light: #ffffff;
             --gray: #666;
+            --card-bg: #fafafa;
         }
 
         body {
@@ -502,7 +503,7 @@
         .review-card {
             min-width: 100%;
             height: 100%;
-            background: #fafafa;
+            background: var(--card-bg);
             padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -1558,15 +1559,15 @@
             }
         }
 
-        /* FAQ Section */
+        /* FAQ Section - Bento Box Style */
         .faq-section {
-            background: var(--light);
+            background: #f8f9fa;
             padding: 8rem 5%;
             position: relative;
         }
 
         .faq-wrapper {
-            width:100%;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -1629,175 +1630,135 @@
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.9);
             line-height: 1.8;
-            margin: 0 auto 3rem;
+            margin: 0 auto;
             font-weight: 400;
         }
 
-        .faq-content {
-            width:100%;
-            margin: 0 auto;
-        }
-
-        .faq-search-container {
-            position: relative;
-            margin-bottom: 0;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .faq-search-input {
+        .faq-bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 320px);
+            gap: 1.5rem;
             width: 100%;
-            padding: 1.2rem 4rem 1.2rem 1.5rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Inter Tight', sans-serif;
-            color: var(--light);
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            outline: none;
+
         }
 
-        .faq-search-input:focus {
-            border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 12px rgba(0, 145, 255, 0.3);
-        }
-
-        .faq-search-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .faq-search-icon {
-            position: absolute;
-            right: 3.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            color: rgba(255, 255, 255, 0.7);
-            pointer-events: none;
-        }
-
-        .faq-search-clear {
-            position: absolute;
-            right: 1.2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-
-        .faq-search-clear.visible {
-            display: flex;
-            opacity: 1;
-        }
-
-        .faq-search-clear:hover {
-            opacity: 1;
-        }
-
-        .faq-search-clear svg {
-            width: 20px;
-            height: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            transition: color 0.3s ease;
-        }
-
-        .faq-search-clear:hover svg {
-            color: var(--light);
-        }
-
-        .faq-accordion {
+        .faq-bento-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2.5rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 500ms ease;
+            background: linear-gradient(145deg, #f0f0f0, #cacaca);
+            box-shadow:  5px 5px 7px #707070,
+            -5px -5px 7px #ffffff;
+
         }
 
-        .faq-item {
+        .faq-bento-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card 1 - Timeline - 2 rows × 1 column */
+        .faq-card-1 {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
             background: #fafafa;
-            border: 2px solid rgba(0, 0, 0, 0.05);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s ease;
         }
 
-        .faq-item.active {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(0, 145, 255, 0.1);
+        /* Card 2 - Technologies - 1 row × 2 columns */
+        .faq-card-2 {
+            grid-column: 2 / 4;
+            grid-row: 1 / 2;
+            background: #fafafa;
         }
 
-        .faq-item.hidden {
-            display: none;
+        /* Card 3 - Support - 1 row × 1 column */
+        .faq-card-3 {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+            background: #fafafa;
         }
 
-        .faq-question {
-            padding: 1.5rem;
-            cursor: pointer;
+        /* Card 4 - Investment - 1 row × 1 column */
+        .faq-card-4 {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+            background: #fafafa;
+        }
+
+        /* Card 5 - Integration - 1 row × 3 columns */
+        .faq-card-5 {
+            grid-column: 1 / 4;
+            grid-row: 3 / 4;
+            background: #fafafa;
+        }
+
+        .faq-card-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
             display: flex;
-            justify-content: space-evenly;
             align-items: center;
-            gap: 1rem;
-            transition: all 0.3s ease;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
         }
 
-        .faq-question:hover {
-            background: rgba(0, 145, 255, 0.05);
+        .faq-card-icon img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
-        .faq-question h3 {
-            font-size: 1.1rem;
+        .faq-card-title {
+            font-size: 1.8rem;
             font-weight: 600;
-            color: var(--dark);
-            margin: 0;
-            flex: 1;
-            line-height: 1.5;
+            color: rgba(0, 0, 0, 0.9);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
         }
 
-        .faq-icon {
-            width: 24px;
-            height: 24px;
-            color: var(--primary);
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease, padding 0.4s ease;
-            padding: 0 1.5rem;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 500px;
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        .faq-answer p {
+        .faq-card-subtitle {
             font-size: 1rem;
-            color: var(--gray);
-            line-height: 1.8;
-            margin: 0;
-            padding-top: 1rem;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .faq-card-description {
+            font-size: 0.95rem;
+            color: rgba(0, 0, 0, 0.7);
+            line-height: 1.6;
+            flex-grow: 1;
+            font-weight: 400;
         }
 
         /* FAQ Responsive */
+        @media (max-width: 1200px) {
+            .faq-bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+
+            .faq-card-1,
+            .faq-card-2,
+            .faq-card-3,
+            .faq-card-4,
+            .faq-card-5 {
+                grid-column: auto;
+                grid-row: auto;
+            }
+        }
+
         @media (max-width: 943px) {
             .faq-section {
                 padding: 4rem 5%;
@@ -1819,15 +1780,44 @@
 
             .faq-subtext {
                 font-size: 1rem;
-                margin-bottom: 2rem;
             }
 
-            .faq-search-container {
-                max-width: 100%;
+            .faq-bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 1rem;
             }
 
-            .faq-question h3 {
-                font-size: 1rem;
+            .faq-bento-card {
+                padding: 2rem;
+                min-height: 280px;
+            }
+
+            .faq-card-title {
+                font-size: 1.5rem;
+            }
+
+            .faq-card-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .faq-card-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 643px) {
+            .faq-title {
+                font-size: 2rem;
+            }
+
+            .faq-bento-card {
+                padding: 1.5rem;
+                min-height: 260px;
+            }
+
+            .faq-card-title {
+                font-size: 1.3rem;
             }
         }
 
