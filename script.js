@@ -394,16 +394,37 @@
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const href = this.getAttribute('href');
+                
+                // Close mobile menu if open
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const menuToggle = document.querySelector('.mobile-menu-toggle');
+                if (mobileMenu && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+                
+                // Special handling for Home link - scroll to top
+                if (href === '#home' || href === '#') {
+                    if (isMobile) {
+                        // Use native smooth scroll on mobile
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        // Use GSAP ScrollSmoother on desktop
+                        if (smoother) {
+                            smoother.scrollTo(0, true);
+                        } else {
+                            gsap.to(window, {
+                                duration: 1,
+                                scrollTo: 0,
+                                ease: 'power3.inOut'
+                            });
+                        }
+                    }
+                    return;
+                }
+                
                 const target = document.querySelector(href);
                 if (target) {
-                    // Close mobile menu if open
-                    const mobileMenu = document.querySelector('.mobile-menu');
-                    const menuToggle = document.querySelector('.mobile-menu-toggle');
-                    if (mobileMenu && mobileMenu.classList.contains('active')) {
-                        mobileMenu.classList.remove('active');
-                        menuToggle.classList.remove('active');
-                    }
-                    
                     // Use different scrolling method based on device
                     if (isMobile) {
                         // Special handling for Services link on mobile - use custom smooth scroll
@@ -524,7 +545,7 @@
              }
              const nextIndex = (currentSlide + 1) % slides.length;
              goToSlide(nextIndex, 'right');
-         }, 5000);
+         }, 10000);
 
          // Reviews Section Animation
          const reviewCards = document.querySelectorAll('.review-card');
@@ -740,78 +761,41 @@
         // Create timeline for opening animation
         const openTimeline = gsap.timeline({ paused: true });
 
-        // Set initial states
+        // Set initial states for overlay and panel only
         gsap.set(contactOverlay, { opacity: 0 });
         gsap.set(contactFormPanel, { x: '100%' });
-        gsap.set([formTitle, formSubtitle, ...formGroups, contactForm.querySelector('.btn-submit')], { 
-            opacity: 0, 
-            y: 30 
-        });
 
-        // Open animation
+        // Open animation - faster and only animates the overlay and panel
         openTimeline
             .to(contactOverlay, {
                 opacity: 1,
-                duration: 0.3,
+                duration: 0.2,
                 ease: 'power2.out'
             })
             .to(contactFormPanel, {
                 x: '0%',
-                duration: 0.8,
+                duration: 0.4,
                 ease: 'power3.out'
-            }, '-=0.1')
-            .to([formTitle, formSubtitle], {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: 'power2.out'
-            }, '-=0.4')
-            .to(formGroups, {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
-                stagger: 0.1,
-                ease: 'power2.out'
-            }, '-=0.3')
-            .to(contactForm.querySelector('.btn-submit'), {
-                opacity: 1,
-                y: 0,
-                duration: 0.5,
-                ease: 'power2.out'
-            }, '-=0.2');
+            }, '-=0.1');
 
-        // Close animation
+        // Close animation - faster and only animates the overlay and panel
         const closeTimeline = gsap.timeline({ paused: true });
 
         closeTimeline
-            .to([contactForm.querySelector('.btn-submit'), ...formGroups].reverse(), {
-                opacity: 0,
-                y: 20,
-                duration: 0.3,
-                stagger: 0.05,
-                ease: 'power2.in'
-            })
-            .to([formTitle, formSubtitle], {
-                opacity: 0,
-                y: 20,
-                duration: 0.3,
-                ease: 'power2.in'
-            }, '-=0.2')
             .to(contactFormPanel, {
                 x: '100%',
-                duration: 0.6,
+                duration: 0.4,
                 ease: 'power3.in'
-            }, '-=0.1')
+            })
             .to(contactOverlay, {
                 opacity: 0,
-                duration: 0.3,
+                duration: 0.2,
                 ease: 'power2.in',
                 onComplete: () => {
                     contactOverlay.classList.remove('active');
                     document.body.style.overflow = '';
                 }
-            });
+            }, '-=0.1');
 
         // Open contact form
         function openContactForm() {
