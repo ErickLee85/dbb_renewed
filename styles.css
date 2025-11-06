@@ -344,9 +344,7 @@
             object-position: center;
         }
 
-        .hero-slide:nth-child(1) img {
-            object-position: right;
-        }
+      
 
         .hero-slide::before {
             content: '';
@@ -865,7 +863,7 @@
             height: auto;
             color: var(--light);
             position: absolute;
-            top: 10%;
+            top: 200px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;

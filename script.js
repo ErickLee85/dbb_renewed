@@ -181,7 +181,6 @@
                                 drawSVG: '100%',
                                 duration: 1.5,
                                 stagger: 0.08,
-                                ease: 'none',
                                 scrollTrigger: {
                                     trigger: servicesHeading,
                                     start: "top 80%",
@@ -221,6 +220,7 @@
                                 gsap.set(number, { 
                                     opacity: 0, 
                                     y: 30,
+                                    filter: 'blur(10px)',
                                     scale: 0.8 
                                 });
                                 gsap.set(featureItems, {
@@ -244,7 +244,7 @@
                                         y: 0,
                                         filter: 'blur(0px)',
                                         scale: 1,
-                                        duration: 0.8,
+                                        duration: 1.2,
                                         stagger: 0.2,
                                         ease: 'power3.out'
                                     })
