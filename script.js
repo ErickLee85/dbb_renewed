@@ -96,9 +96,16 @@
                     )
 
                       document.querySelectorAll('.stat-number').forEach((statNumber) => {
-                        const text = statNumber.textContent;
+                        const text = statNumber.textContent.trim();
+                        // Extract number by removing all non-digits
                         const number = parseInt(text.replace(/\D/g, ''));
-                        const suffix = text.replace(/[0-9]/g, '');
+                        // Extract suffix - get everything after the last digit (including commas, +, etc.)
+                        const suffix = text.replace(/[\d,]/g, '');
+                        
+                        // Function to format number with commas
+                        const formatNumber = (num) => {
+                            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        };
                         
                         gsap.fromTo(statNumber, 
                             { textContent: 0 },
@@ -113,7 +120,8 @@
                                     toggleActions: "play none none none",
                                 },
                                 onUpdate: function() {
-                                    statNumber.textContent = Math.ceil(statNumber.textContent) + suffix;
+                                    const currentValue = Math.ceil(statNumber.textContent);
+                                    statNumber.textContent = formatNumber(currentValue) + suffix;
                                 }
                             }
                         );
@@ -887,22 +895,54 @@
                 });
 
                 // FAQ Search Functionality
+                const faqSearchClear = document.getElementById('faqSearchClear');
+                
+                // Function to toggle clear button visibility
+                const toggleClearButton = () => {
+                    if (faqSearchClear && faqSearchInput) {
+                        if (faqSearchInput.value.trim().length > 0) {
+                            faqSearchClear.classList.add('visible');
+                        } else {
+                            faqSearchClear.classList.remove('visible');
+                        }
+                    }
+                };
+
+                // Function to perform search
+                const performSearch = (searchTerm) => {
+                    faqItems.forEach(item => {
+                        const questionText = item.getAttribute('data-question')?.toLowerCase() || '';
+                        const answerElement = item.querySelector('.faq-answer p');
+                        const answerText = answerElement ? answerElement.textContent.toLowerCase() : '';
+                        
+                        // Check if search term matches question or answer
+                        if (searchTerm === '' || questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                };
+
                 if (faqSearchInput) {
+                    // Show/hide clear button on input
                     faqSearchInput.addEventListener('input', (e) => {
                         const searchTerm = e.target.value.toLowerCase().trim();
-                        
-                        faqItems.forEach(item => {
-                            const questionText = item.getAttribute('data-question')?.toLowerCase() || '';
-                            const answerElement = item.querySelector('.faq-answer p');
-                            const answerText = answerElement ? answerElement.textContent.toLowerCase() : '';
-                            
-                            // Check if search term matches question or answer
-                            if (searchTerm === '' || questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
-                                item.classList.remove('hidden');
-                            } else {
-                                item.classList.add('hidden');
-                            }
-                        });
+                        toggleClearButton();
+                        performSearch(searchTerm);
+                    });
+
+                    // Show/hide clear button on page load
+                    toggleClearButton();
+                }
+
+                // Clear button functionality
+                if (faqSearchClear && faqSearchInput) {
+                    faqSearchClear.addEventListener('click', () => {
+                        faqSearchInput.value = '';
+                        faqSearchInput.focus();
+                        toggleClearButton();
+                        performSearch('');
                     });
                 }
             }
@@ -967,19 +1007,19 @@
                 });
             }
 
-            // Animate placeholder image
-            const faqImagePlaceholder = document.querySelector('.faq-image-placeholder');
-            if (faqImagePlaceholder) {
-                gsap.fromTo(faqImagePlaceholder, {
+            // Animate FAQ header background
+            const faqHeader = document.querySelector('.faq-header');
+            if (faqHeader) {
+                gsap.fromTo(faqHeader, {
                     opacity: 0,
-                    scale: 0.9
+                    y: 30
                 }, {
                     opacity: 1,
-                    scale: 1,
+                    y: 0,
                     duration: 0.8,
                     scrollTrigger: {
-                        trigger: faqImagePlaceholder,
-                        start: "top 85%",
+                        trigger: faqHeader,
+                        start: "top 80%",
                         toggleActions: "play none none none"
                     }
                 });
