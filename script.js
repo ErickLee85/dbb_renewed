@@ -859,3 +859,129 @@
             });
         }
         } // End of contact form initialization check
+
+        // FAQ Accordion and Search Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const faqSearchInput = document.getElementById('faqSearch');
+
+            if (faqItems.length > 0) {
+                // Accordion toggle functionality
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question');
+                    if (question) {
+                        question.addEventListener('click', () => {
+                            const isActive = item.classList.contains('active');
+                            
+                            // Close all items
+                            faqItems.forEach(faqItem => {
+                                faqItem.classList.remove('active');
+                            });
+                            
+                            // Open clicked item if it wasn't active
+                            if (!isActive) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+
+                // FAQ Search Functionality
+                if (faqSearchInput) {
+                    faqSearchInput.addEventListener('input', (e) => {
+                        const searchTerm = e.target.value.toLowerCase().trim();
+                        
+                        faqItems.forEach(item => {
+                            const questionText = item.getAttribute('data-question')?.toLowerCase() || '';
+                            const answerElement = item.querySelector('.faq-answer p');
+                            const answerText = answerElement ? answerElement.textContent.toLowerCase() : '';
+                            
+                            // Check if search term matches question or answer
+                            if (searchTerm === '' || questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                                item.classList.remove('hidden');
+                            } else {
+                                item.classList.add('hidden');
+                            }
+                        });
+                    });
+                }
+            }
+        });
+
+        // FAQ Section Animation
+        document.fonts.ready.then(() => {
+            const faqTitle = document.querySelector('.faq-title');
+            if (faqTitle) {
+                let splitFaqTitle = SplitText.create([".faq-title"], { type: "words" });
+                gsap.fromTo(splitFaqTitle.words, {
+                    opacity: 0,
+                    filter: 'blur(10px)'
+                }, {
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 1,
+                    stagger: 0.1,
+                    delay: 0.5,
+                    scrollTrigger: {
+                        trigger: faqTitle,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+
+            // Animate FAQ items on scroll
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                gsap.fromTo(item, {
+                    opacity: 0,
+                    y: 30
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+
+            // Animate search input
+            const faqSearchContainer = document.querySelector('.faq-search-container');
+            if (faqSearchContainer) {
+                gsap.fromTo(faqSearchContainer, {
+                    opacity: 0,
+                    y: 20
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    scrollTrigger: {
+                        trigger: faqSearchContainer,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+
+            // Animate placeholder image
+            const faqImagePlaceholder = document.querySelector('.faq-image-placeholder');
+            if (faqImagePlaceholder) {
+                gsap.fromTo(faqImagePlaceholder, {
+                    opacity: 0,
+                    scale: 0.9
+                }, {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    scrollTrigger: {
+                        trigger: faqImagePlaceholder,
+                        start: "top 85%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            }
+        });
