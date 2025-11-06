@@ -902,6 +902,48 @@
             max-width: 700px;
             font-weight: 400;
             text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 700px;
+            counter-reset: feature-counter;
+        }
+
+        .service-feature-item {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            padding-left: 2.5rem;
+            position: relative;
+            font-weight: 400;
+            counter-increment: feature-counter;
+        }
+
+        .service-feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .service-feature-item::before {
+            content: counter(feature-counter);
+            position: absolute;
+            left: 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: color 0.3s ease;
+        }
+
+        .service-feature-item:hover::before {
+            color: rgba(255, 255, 255, 1);
         }
 
         /* Stats Section */
@@ -1462,6 +1504,15 @@
 
             .service-description {
                 font-size: 1.1rem;
+            }
+
+            .service-features {
+                margin-top: 1.5rem;
+            }
+
+            .service-feature-item {
+                font-size: 1rem;
+                margin-bottom: 0.8rem;
             }
 
             .services-heading {

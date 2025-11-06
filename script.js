@@ -198,6 +198,7 @@
                             const title = item.querySelector('.service-title');
                             const description = item.querySelector('.service-description');
                             const number = item.querySelector('.service-number');
+                            const featureItems = item.querySelectorAll('.service-feature-item');
                             
                             // On mobile, use simpler animations without scrub
                             if (isMobile) {
@@ -212,22 +213,39 @@
                                     y: 30,
                                     scale: 0.8 
                                 });
+                                gsap.set(featureItems, {
+                                    opacity: 0,
+                                    x: -30,
+                                    filter: 'blur(5px)'
+                                });
 
                                 // Simple scroll-triggered animation for mobile
-                                gsap.to([number, title, description], {
-                                    opacity: 1,
-                                    y: 0,
-                                    filter: 'blur(0px)',
-                                    scale: 1,
-                                    duration: 0.8,
-                                    stagger: 0.2,
-                                    ease: 'power3.out',
+                                const mobileTimeline = gsap.timeline({
                                     scrollTrigger: {
                                         trigger: item,
                                         start: "top 80%",
                                         toggleActions: "play none none none"
                                     }
                                 });
+
+                                mobileTimeline
+                                    .to([number, title, description], {
+                                        opacity: 1,
+                                        y: 0,
+                                        filter: 'blur(0px)',
+                                        scale: 1,
+                                        duration: 0.8,
+                                        stagger: 0.2,
+                                        ease: 'power3.out'
+                                    })
+                                    .to(featureItems, {
+                                        opacity: 1,
+                                        x: 0,
+                                        filter: 'blur(0px)',
+                                        duration: 0.6,
+                                        stagger: 0.1,
+                                        ease: 'power2.out'
+                                    }, '-=0.3');
                             } else {
                                 // Desktop animation with scrub
                                 // Alternate between left and right animation
@@ -244,6 +262,11 @@
                                     opacity: 0, 
                                     x: xOffset,
                                     scale: 0.8 
+                                });
+                                gsap.set(featureItems, {
+                                    opacity: 0,
+                                    x: xOffset + 50,
+                                    filter: 'blur(5px)'
                                 });
                                 gsap.set(item, {
                                     x: 0
@@ -279,7 +302,7 @@
                                     }
                                 });
 
-                                // Animate from x-axis - number first, then title, then description
+                                // Animate from x-axis - number first, then title, then description, then features
                                 serviceTimeline
                                     .to(number, {
                                         opacity: 1,
@@ -301,7 +324,15 @@
                                         filter: 'blur(0px)',
                                         duration: 1,
                                         ease: 'power3.out'
-                                    }, '-=0.6');
+                                    }, '-=0.6')
+                                    .to(featureItems, {
+                                        opacity: 1,
+                                        x: 0,
+                                        filter: 'blur(0px)',
+                                        duration: 0.8,
+                                        stagger: 0.1,
+                                        ease: 'power2.out'
+                                    }, '-=0.4');
                             }
                         });
 
