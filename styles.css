@@ -681,6 +681,7 @@
             transform: rotate(0deg);
         }
 
+
         .get-in-touch-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1565,7 +1566,7 @@
         }
 
         .faq-wrapper {
-            max-width: 1400px;
+            width:100%;
             margin: 0 auto;
         }
 
