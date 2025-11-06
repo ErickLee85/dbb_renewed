@@ -273,7 +273,7 @@
             align-items: center;
             color: var(--light);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
         }
 
         .hero-content {
@@ -321,10 +321,8 @@
         }
 
         .hero-image {
-            height: calc(100vh + 200px);
+            height: 100vh;
             position: relative;
-            margin-top: -100px;
-            margin-bottom: -100px;
             overflow: hidden;
         }
 
@@ -748,7 +746,8 @@
         }
 
         .form-field-group input,
-        .form-field-group textarea {
+        .form-field-group textarea,
+        .form-field-group select {
             width: 100%;
             padding: 1rem 0;
             border: none;
@@ -766,8 +765,24 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .form-field-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='%23ffffff'%3E%3Cpath d='M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: 24px;
+            padding-right: 2rem;
+        }
+
+        .form-field-group select option {
+            background: var(--dark);
+            color: var(--light);
+        }
+
         .form-field-group input:focus,
-        .form-field-group textarea:focus {
+        .form-field-group textarea:focus,
+        .form-field-group select:focus {
             border-bottom-color: var(--primary);
         }
 
