@@ -1,5 +1,117 @@
  gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother, DrawSVGPlugin);
 
+        // reCAPTCHA callbacks - these are called automatically when reCAPTCHA completes
+        // The token is passed as a parameter
+        window.onContactFormSubmit = async function(token) {
+            const contactForm = document.getElementById('contactForm');
+            if (!contactForm) return;
+            
+            const submitBtn = contactForm.querySelector('.btn-submit');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.8';
+            submitBtn.innerHTML = 'Sending...';
+            
+            try {
+                // Get form data
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData);
+                
+                // Send to API
+                const response = await fetch('https://nodemailer-gold.vercel.app/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        recaptchaToken: token
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Thank you for your message! We\'ll get back to you soon.');
+                    contactForm.reset();
+                    grecaptcha.reset();
+                    // Close the contact form overlay
+                    const contactOverlay = document.getElementById('contactOverlay');
+                    if (contactOverlay) {
+                        contactOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                        // Reset panel position
+                        const contactFormPanel = document.getElementById('contactFormPanel');
+                        if (contactFormPanel) {
+                            gsap.set(contactFormPanel, { x: '100%' });
+                            gsap.set(contactOverlay, { opacity: 0 });
+                        }
+                    }
+                } else {
+                    alert('Failed to send message. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send message. Please try again.');
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.innerHTML = originalBtnText;
+            }
+        };
+        
+        window.onGetInTouchSubmit = async function(token) {
+            const getInTouchForm = document.getElementById('getInTouchForm');
+            if (!getInTouchForm) return;
+            
+            const submitBtn = getInTouchForm.querySelector('.btn-touch-submit');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.8';
+            submitBtn.innerHTML = 'Sending...';
+            
+            try {
+                // Get form data
+                const formData = new FormData(getInTouchForm);
+                const data = Object.fromEntries(formData);
+                
+                // Send to API
+                const response = await fetch('https://nodemailer-gold.vercel.app/sendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        recaptchaToken: token
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Thank you for reaching out! We\'ll get back to you soon.');
+                    getInTouchForm.reset();
+                    grecaptcha.reset();
+                } else {
+                    alert('Failed to send message. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send message. Please try again.');
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.innerHTML = originalBtnText;
+            }
+        };
+
         // Detect mobile/touch devices
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
                         (window.innerWidth <= 943) || 
@@ -726,22 +838,13 @@
          });
 
          // Get In Touch Form Submission
+         // Form submission is now handled by the reCAPTCHA callback (onGetInTouchSubmit)
+         // We just need to prevent default and let reCAPTCHA handle it
          const getInTouchForm = document.getElementById('getInTouchForm');
          if (getInTouchForm) {
              getInTouchForm.addEventListener('submit', (e) => {
                  e.preventDefault();
-                 const formData = new FormData(getInTouchForm);
-                 const data = Object.fromEntries(formData);
-                 console.log('Get in Touch form submitted:', data);
-                 
-                 // You can add your form submission logic here
-                 // For example, using fetch to send to an API
-                 
-                 // Show success message
-                 alert('Thank you for reaching out! We\'ll get back to you soon.');
-                 getInTouchForm.reset();
-                 
-                 // Form reset handled by browser
+                 // reCAPTCHA will automatically trigger on button click and call onGetInTouchSubmit
              });
          }
 
@@ -834,22 +937,12 @@
         });
 
         // Form submission
+        // Form submission is now handled by the reCAPTCHA callback (onContactFormSubmit)
+        // We just need to prevent default and let reCAPTCHA handle it
         if (contactForm) {
             contactForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                // Here you can add form submission logic
-                // For now, just show an alert
-                const formData = new FormData(contactForm);
-                const data = Object.fromEntries(formData);
-                console.log('Form submitted:', data);
-                
-                // You can add your form submission logic here
-                // For example, using fetch to send to an API
-                
-                // Show success message (you can customize this)
-                alert('Thank you for your message! We\'ll get back to you soon.');
-                contactForm.reset();
-                closeContactForm();
+                // reCAPTCHA will automatically trigger on button click and call onContactFormSubmit
             });
         }
         } // End of contact form initialization check
