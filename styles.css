@@ -860,17 +860,20 @@
         }
 
         .services-heading {
-            font-size: 4rem;
-            font-weight: 400;
+            max-width: 600px;
+            width: 80%;
+            height: auto;
             color: var(--light);
-            text-align: center;
-            letter-spacing: -1px;
             position: absolute;
             top: 10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
             z-index: 1;
+            overflow: visible;
+        }
+
+        .services-strokes {
+            stroke: var(--light);
         }
 
         .service-item {
@@ -1537,8 +1540,8 @@
                 top: auto;
                 left: auto;
                 transform: none;
-                margin-bottom: 3rem;
-                font-size: 2.5rem;
+                max-width: 100%;
+                margin: 0 auto 3rem;
             }
         }
         @media(max-width:643px) {
@@ -1555,7 +1558,7 @@
             }
 
             .services-heading {
-                font-size: 2rem;
+                max-width: 600px;
             }
         }
 

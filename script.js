@@ -1,4 +1,4 @@
- gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother);
+ gsap.registerPlugin(ScrollTrigger, SplitText, ScrollSmoother, DrawSVGPlugin);
 
         // Detect mobile/touch devices
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
@@ -169,20 +169,22 @@
                     const servicesHeading = document.querySelector('.services-heading');
                     
                     if (servicesSection && serviceItems.length > 0) {
-                        // Animate the heading with SplitText (same as hero-tagline)
+                        // Animate the SVG text paths with DrawSVG (handwriting effect)
                         if (servicesHeading) {
-                            let splitServices = SplitText.create([".services-heading"], { type: "words" });
-                            gsap.fromTo(splitServices.words, {
-                                opacity: 0,
-                                filter: 'blur(10px)'
-                            }, {
-                                opacity: 1,
-                                filter: 'blur(0px)',
-                                duration: 1,
-                                stagger: 0.1,
-                                delay: 0.5,
+                            const servicePaths = servicesHeading.querySelectorAll('.services-path');
+                            
+                            // Set initial state
+                            gsap.set(servicePaths, { drawSVG: '0% 0%' });
+                            
+                            // Animate drawing in
+                            gsap.to(servicePaths, {
+                                drawSVG: '100%',
+                                duration: 1.5,
+                                stagger: 0.08,
+                                ease: 'none',
                                 scrollTrigger: {
                                     trigger: servicesHeading,
+                                    start: "top 80%",
                                     toggleActions: "play none none none",
                                     markers: false
                                 }
@@ -870,39 +872,6 @@
 
         // FAQ Bento Box Animation
         document.fonts.ready.then(() => {
-            const faqTitle = document.querySelector('.faq-title');
-            
-                let splitFaqTitle = SplitText.create(".faq-title", { type: "words" });
-                gsap.fromTo(splitFaqTitle.words, {
-                    opacity: 0,
-                    filter: 'blur(10px)'
-                }, {
-                    opacity: 1,
-                    filter: 'blur(0px)',
-                    duration: 1,
-                    stagger: 0.1,
-                    scrollTrigger: {
-                        trigger: ".faq-header",
-                        start: "top 80%",
-                        toggleActions: "play none none none"
-                    }
-                });
-            
-
-               const faqSubtext = document.querySelector('.faq-subtext');
-                if (faqSubtext) {
-                    gsap.fromTo(faqSubtext, {
-                        opacity: 0,
-                    }, {
-                        opacity: 1,
-                        y: 0,
-                        scrollTrigger: {
-                            trigger: faqSubtext,
-                            start: "top 85%",
-                            toggleActions: "play none none none"
-                        }
-                    });
-                }
 
             // Animate FAQ bento cards on scroll
             const faqBentoCards = document.querySelectorAll('.faq-bento-card');
